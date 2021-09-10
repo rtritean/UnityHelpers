@@ -1,0 +1,29 @@
+using UnityEngine;
+using Cinemachine;
+
+public class CinemachineShake : MonoBehavior
+{
+	private float shakeTimer;
+	private CinemachineVirtualCamera cinemachineVirtualCamera;
+	private CinemachineBasicMultiChannelPerlin perlinModule;
+	
+	private void Awake(){
+		cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
+		perlinModule = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+	}
+	
+	public void ShakeCamera(float intensity, float duration){
+		perlinModule.m_AmplitudeGain = intensity;
+		shakeTimer = duration;
+	}
+	
+	private void Update(){
+		if(shakeTimer > 0){
+			shakeTimer -= Time.deltaTime;
+			
+			if(shakeTimer <= 0){
+				perlinModule.m_AmplitudeGain = 0;
+			}
+		}
+	}
+}
